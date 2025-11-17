@@ -1,0 +1,74 @@
+a)
+SQL> connect sys as sysdba
+Enter password:
+Connected.
+SQL> create user user_drh1 identified by 12345;
+User created.
+SQL> create user user_daf1 identified by 12345;
+User created.
+b)
+SQL> create role role_drh1;
+Role created.
+SQL> create role role_daf1;
+Role created.
+SQL> grant create session,create table to role_drh1;
+Grant succeeded.
+SQL> grant create session,create table to role_daf1;
+Grant succeeded.
+c)
+SQL> grant role_drh1 to user_drh1;
+Grant succeeded.
+SQL> grant role_daf1 to user_daf1;
+Grant succeeded.
+SQL> connect user_drh1/12345;
+Connected.
+d)
+SQL> create table employe(
+  2  id number,
+  3  nom varchar2(10),
+  4  prenom varchar2(10),
+  5  salaire number);
+create table employe(
+*
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'SYSTEM'
+e)
+SQL> alter user user_drh1 identified by 12345 default tablespace users quota 20 M ON users;
+User altered.
+SQL> alter user user_daf1 identified by 12345 default tablespace users quota 20 M ON users;
+User altered.
+f)
+SQL> connect user_daf1/12345
+Connected.
+SQL> create table facture(
+  2  num number,
+  3  datef date,
+  4  montant number);
+Table created.
+
+g)
+SQL> connect user_drh1/12345;
+Connected.
+SQL> create table employe(
+  2  id number ,
+  3  nom varchar2(10),
+  4  prenom varchar2(10),
+  5  salaire number );
+
+Table created.
+SQL> INSERT INTO employe (id, nom, prenom, salaire) VALUES (1, 'jh', 'john',3500);
+1 row created.
+SQL> INSERT INTO employe (id, nom, prenom, salaire) VALUES (2, 'sm', 'jane', 4000);
+1 row created.
+SQL> connect user_daf1/12345;
+Connected.
+SQL> insert into facture(num,datef,montant)values(12,'12/12/24',13);
+1 row created.
+SQL> insert into facture(num,datef,montant)values(15,'15/10/24',14);
+1 row created.
+//l'utlisateur n'a pas d'accès sur le table facture donc il ne peut pas inserer des lignes //
+i)
+SQL> grant insert,select on user_daf1.facture to user_drh1;
+Grant succeeded.
+SQL> grant update on user_drh1.employe to user_daf1;
+Grant succeeded.

@@ -1,0 +1,25 @@
+grant dba to user1;
+-->user1 dvenir un admin data base administrateur mais ne peut pas supprimer super admin (sys)
+show user :savoir sur quelle admin tu est connecté 
+connect sys/user1 :connecter sur un utilisateur 
+create user user1 identified by x1;
+//user1 identified par le mot de passe x1
+grant create session to user1;
+//donner une session pour user1
+connect user1/x1;
+//connecter sur user1 par mot de passe x1
+
+connect sys as sysdba 
+revoke create session from user1
+//retirer session pour user1
+
+insert,update,alter,select:previleges objets
+create table,create view,chap table:previleges système
+
+connect sys as sysdba
+SQL> grant create user to chayma;
+SQL> grant all privileges to chayma;
+SQL> connect chayma/1234
+SQL> create user utest identified by 1234;
+-->User created.
+
